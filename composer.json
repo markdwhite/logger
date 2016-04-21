@@ -12,7 +12,7 @@
         }
     ],
     "require": {
-        "monolog": "~1.11"
+        "monolog": "1.*"
     },
     "require-dev": {},
     "autoload": {
