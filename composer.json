@@ -1,0 +1,23 @@
+{
+    "name": "somsip/logger",
+    "description": "Extensions and variations for use with Monolog",
+    "keywords": [
+        "log", "logging"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mark White",
+            "email": "mark@somsip.com"
+        }
+    ],
+    "require": {
+        "monolog": "~1.11"
+    },
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "Somsip\\Logger\\": "src/"
+        }
+    }
+}
