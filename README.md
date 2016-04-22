@@ -1,9 +1,11 @@
 # Monolog Logger Extensions
 
-Currently there is only one extension which injects the Class::function() into the log entry. Eg:
+Currently there is only one extension which injects the calling Class::function() into the log entry. Eg:
 
 ```
 Log::debug('called');
+
+(outputs)
 
 [2016-04-21 23:51:42] testing.DEBUG: AdminController::home() called
 ```

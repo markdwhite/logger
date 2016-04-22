@@ -20,51 +20,48 @@ class CallerInlineFormatter extends LineFormatter
     {
         // Append class and function to the message
         if ($class = $this->extractClass($record['extra'])) {
-            $append = sprintf('%s::', $class);
-        } else {
-            $append = '';
+            $class .= "::";
         }
-        if ($function = $this->extractFunction($record['extra'])) {
-            $append = sprintf('%s%s()', $append, $function);
+        if (!$function = $this->extractFunction($record['extra'])) {
+            $function = '{undefined}';
         }
-        if (!empty($append)) {
-            $record['message'] = sprintf('%s %s', $append, $record['message']);
-        }
+        $record['message'] = sprintf('%s%s() %s', $class, $function, $record['message']);
 
         return parent::format($record);
     }
 
     /**
-     * Extracts the calling class from the record
+     * Extracts the calling class from the extras
      *
-     * @param array $record
+     * @param array $extra
      * @return string
      */
-    private function extractClass(array $record)
+    private function extractClass(array $extra)
     {
-        if (isset($record['class'])) {
-            $class = $record['class'];
-            // Strip the namespace
-            $backslashPos = strrpos($class, '\\');
-            if ($backslashPos !== false) {
-                $class = substr($class, $backslashPos + 1);
-            }
-            return $class;
+        if (!isset($extra['class'])) {
+            return '';
         }
-        return false;
+
+        $class = $extra['class'];
+        // Strip the namespace
+        $backslashPos = strrpos($class, '\\');
+        if ($backslashPos !== false) {
+            $class = substr($class, $backslashPos + 1);
+        }
+        return $class;
     }
 
     /**
-     * Extracts the calling function
+     * Extracts the calling function from the extras
      *
-     * @param array $record
+     * @param array $extra
      * @return string
      */
-    private function extractFunction(array $record)
+    private function extractFunction(array $extra)
     {
-        if (isset($record['function'])) {
-            return $record['function'];
+        if (!isset($extra['function'])) {
+            return '';
         }
-        return false;
+        return $extra['function'];
     }
 }
