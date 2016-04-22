@@ -20,40 +20,89 @@ class CallerInlineFormatterTest extends PHPUnit_Framework_TestCase
                 'line' => '123',
                 'file' => '/var/www/test.php'
         ];
-        $mockRecord = $this->mockRecord($extra);
+        $record = $this->mockRecord($extra);
 
-
-        $result = $formatter->format($mockRecord);
+        $result = $formatter->format($record);
         // Trim trailing newline
         $result = trim($result);
 
         $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: Class::test() Test message', $result);
     }
 
-    public function testFormatNoClass()
+    public function testFormatDefaultNoClassNamespace()
+    {
+        $formatter = new CallerInlineFormatter();
+        $extra = [
+                'class' => 'Class',
+                'function' => 'test',
+                'line' => '123',
+                'file' => '/var/www/test.php'
+        ];
+        $record = $this->mockRecord($extra);
+
+        $result = $formatter->format($record);
+        // Trim trailing newline
+        $result = trim($result);
+
+        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: Class::test() Test message', $result);
+    }
+
+    public function testFormatMissingClass()
     {
         $formatter = new CallerInlineFormatter();
         $extra = [
                 'function' => 'test',
         ];
-        $mockRecord = $this->mockRecord($extra);
+        $record = $this->mockRecord($extra);
 
-        $result = $formatter->format($mockRecord);
+        $result = $formatter->format($record);
         // Trim trailing newline
         $result = trim($result);
 
         $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: test() Test message', $result);
     }
 
-    public function testFormatNoFunction()
+    public function testFormatEmptyClass()
+    {
+        $formatter = new CallerInlineFormatter();
+        $extra = [
+                'class' => '',
+                'function' => 'test',
+        ];
+        $record = $this->mockRecord($extra);
+
+        $result = $formatter->format($record);
+        // Trim trailing newline
+        $result = trim($result);
+
+        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: test() Test message', $result);
+    }
+
+    public function testFormatMissingFunction()
     {
         $formatter = new CallerInlineFormatter();
         $extra = [
             'class' => '\\Tests\Unit\\Class',
         ];
-        $mockRecord = $this->mockRecord($extra);
+        $record = $this->mockRecord($extra);
 
-        $result = $formatter->format($mockRecord);
+        $result = $formatter->format($record);
+        // Trim trailing newline
+        $result = trim($result);
+
+        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: Class::{undefined}() Test message', $result);
+    }
+
+    public function testFormatEmptyFunction()
+    {
+        $formatter = new CallerInlineFormatter();
+        $extra = [
+            'class' => '\\Tests\Unit\\Class',
+            'function' => '',
+        ];
+        $record = $this->mockRecord($extra);
+
+        $result = $formatter->format($record);
         // Trim trailing newline
         $result = trim($result);
 
@@ -63,9 +112,9 @@ class CallerInlineFormatterTest extends PHPUnit_Framework_TestCase
     public function testFormatNoExtras()
     {
         $formatter = new CallerInlineFormatter();
-        $mockRecord = $this->mockRecord();
+        $record = $this->mockRecord();
 
-        $result = $formatter->format($mockRecord);
+        $result = $formatter->format($record);
         // Trim trailing newline
         $result = trim($result);
 
