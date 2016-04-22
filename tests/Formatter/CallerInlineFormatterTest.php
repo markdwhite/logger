@@ -2,7 +2,7 @@
 
 use Somsip\Logger\Formatter\CallerInlineFormatter;
 
-class ApiCallTest extends PHPUnit_Framework_TestCase
+class CallerInlineFormatterTest extends PHPUnit_Framework_TestCase
 {
     public function testNew()
     {
