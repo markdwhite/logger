@@ -15,6 +15,7 @@ Log::debug('called');
 This works with Laravel 5.1 (and maybe others). This can be accomplished by adding the following to AppServiceProvider:
 
 ```
+use Monolog\Logger;
 use Monolog\Processor\IntrospectionProcessor;
 use Somsip\Logger\Formatter\CallerInlineFormatter;
 ```
