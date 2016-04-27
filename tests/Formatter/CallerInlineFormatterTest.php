@@ -26,7 +26,7 @@ class CallerInlineFormatterTest extends PHPUnit_Framework_TestCase
         // Trim trailing newline
         $result = trim($result);
 
-        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: Class::test() Test message', $result);
+        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: Class::test() Test message []', $result);
     }
 
     public function testFormatDefaultNoClassNamespace()
@@ -44,7 +44,7 @@ class CallerInlineFormatterTest extends PHPUnit_Framework_TestCase
         // Trim trailing newline
         $result = trim($result);
 
-        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: Class::test() Test message', $result);
+        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: Class::test() Test message []', $result);
     }
 
     public function testFormatMissingClass()
@@ -59,7 +59,7 @@ class CallerInlineFormatterTest extends PHPUnit_Framework_TestCase
         // Trim trailing newline
         $result = trim($result);
 
-        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: test() Test message', $result);
+        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: test() Test message []', $result);
     }
 
     public function testFormatEmptyClass()
@@ -75,7 +75,7 @@ class CallerInlineFormatterTest extends PHPUnit_Framework_TestCase
         // Trim trailing newline
         $result = trim($result);
 
-        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: test() Test message', $result);
+        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: test() Test message []', $result);
     }
 
     public function testFormatMissingFunction()
@@ -90,7 +90,7 @@ class CallerInlineFormatterTest extends PHPUnit_Framework_TestCase
         // Trim trailing newline
         $result = trim($result);
 
-        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: Class::{undefined}() Test message', $result);
+        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: Class::{undefined}() Test message []', $result);
     }
 
     public function testFormatEmptyFunction()
@@ -106,7 +106,7 @@ class CallerInlineFormatterTest extends PHPUnit_Framework_TestCase
         // Trim trailing newline
         $result = trim($result);
 
-        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: Class::{undefined}() Test message', $result);
+        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: Class::{undefined}() Test message []', $result);
     }
 
     public function testFormatNoExtras()
@@ -118,7 +118,22 @@ class CallerInlineFormatterTest extends PHPUnit_Framework_TestCase
         // Trim trailing newline
         $result = trim($result);
 
-        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: Test message', $result);
+        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: Test message []', $result);
+    }
+
+    public function testFormatWithContext()
+    {
+        $formatter = new CallerInlineFormatter();
+        $record = $this->mockRecord();
+        $record['context'] = [
+            'test' => 'context'
+        ];
+
+        $result = $formatter->format($record);
+        // Trim trailing newline
+        $result = trim($result);
+
+        $this->assertEquals('[2000-01-01 00:00:00] phpunit.TEST: Test message {"test":"context"}', $result);
     }
 
     /**

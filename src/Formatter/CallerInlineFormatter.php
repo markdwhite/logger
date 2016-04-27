@@ -25,7 +25,7 @@ use Monolog\Formatter\LineFormatter;
  */
 class CallerInlineFormatter extends LineFormatter
 {
-    const SIMPLE_FORMAT = "[%datetime%] %channel%.%level_name%: %message%\n";
+    const SIMPLE_FORMAT = "[%datetime%] %channel%.%level_name%: %message% %context%\n";
 
     /**
      * {@inheritdoc}
